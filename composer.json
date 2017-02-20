@@ -1,0 +1,27 @@
+{
+    "name": "shanginn/crudroller",
+    "description": "Universal API CRUD controller for Laravel and Dingo (Crudroller)",
+    "keywords": ["laravel", "dingo", "api", "crud", "controller", "resource", "crudroller"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Shangin Nikolai",
+            "email": "shanginn@gmail.com",
+            "homepage": "http://shanginn.ru/"
+        }
+    ],
+    "require": {
+        "php": ">=7.0.0",
+        "illuminate/routing": "^5.4",
+        "illuminate/support": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Shanginn\\Crudroller\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "preferred-install": "dist"
+    }
+}
