@@ -4,6 +4,7 @@ namespace Shanginn\Crudroller\Controllers;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 abstract class Crudroller extends Controller
@@ -12,9 +13,10 @@ abstract class Crudroller extends Controller
      * Display a listing of the resource.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    abstract public function index(Model $model);
+    abstract public function index(Model $model, Request $request);
 
     /**
      * Store a newly created resource in storage.
