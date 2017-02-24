@@ -30,7 +30,6 @@ class CrudrollerBindings
      *
      * @param  \Illuminate\Contracts\Routing\Registrar  $router
      * @param  \Illuminate\Foundation\Application  $app
-     * @return void
      */
     public function __construct(Registrar $router, Application $app)
     {
@@ -65,22 +64,32 @@ class CrudrollerBindings
                 }
             }
 
-            if ($param = $route->parameter($itemParam)) {
-                $model = $this->app->make($modelClass);
-
-                $route->setParameter('item',
-                    $model->where(
-                        $model->getRouteKeyName(), $param
-                    )->firstOrFail()
-                );
-
-                $route->forgetParameter($itemParam);
-            }
+            $this->insertModelInstance($modelClass, $route, $itemParam);
 
             $this->app->bind(Model::class, $modelClass);
             $this->app->bind(FormRequest::class, $requestsClasses[$method] ?? $requestsClasses['default']);
         }
 
         return $next($request);
+    }
+
+    /**
+     * @param string $modelClass
+     * @param \Illuminate\Routing\Route $route
+     * @param string $itemParam
+     */
+    protected function insertModelInstance($modelClass, $route, $itemParam)
+    {
+        if ($param = $route->parameter($itemParam)) {
+            $model = $this->app->make($modelClass);
+
+            $route->setParameter('item',
+                $model->where(
+                    $model->getRouteKeyName(), $param
+                )->firstOrFail()
+            );
+
+            $route->forgetParameter($itemParam);
+        }
     }
 }

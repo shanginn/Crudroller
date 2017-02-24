@@ -3,6 +3,7 @@
 namespace Shanginn\Crudroller;
 
 use Illuminate\Support\ServiceProvider;
+use Shanginn\Crudroller\Facades\Cruder as CruderFacade;
 use Shanginn\Crudroller\Routing\Cruder;
 use Shanginn\Crudroller\Routing\Middleware\CrudrollerBindings;
 use Shanginn\Crudroller\Routing\ResourceRegistrar;
@@ -27,6 +28,10 @@ class CrudrollerServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->mergeConfigFrom(
+            __DIR__ . '/config/crudroller.php', 'crudroller'
+        );
+
         $this->registerClassAliases();
 
         $this->registerMiddleware();
@@ -38,9 +43,49 @@ class CrudrollerServiceProvider extends ServiceProvider
         $this->prependCrudrollerMiddleware($this->app->make(Kernel::class));
     }
 
-    protected function prependCrudrollerMiddleware(\Illuminate\Foundation\Http\Kernel $kernel)
+    /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
     {
-        //kernel->prependMiddleware('crud.binding');
+        $this->publishes([
+            __DIR__ . '/config/crudroller.php' => config_path('crudroller.php'),
+        ], 'config');
+    }
+
+    protected function registerClassAliases()
+    {
+        $classAliases = [
+            'crud.resource' => [
+                \Dingo\Api\Routing\ResourceRegistrar::class,
+                \Illuminate\Routing\ResourceRegistrar::class
+            ],
+            'crud.binding' => CrudrollerBindings::class,
+            'crud.cruder' => Cruder::class,
+        ];
+
+        foreach ($classAliases as $key => $aliases) {
+            foreach ((array) $aliases as $alias) {
+                $this->app->alias($key, $alias);
+            }
+        }
+    }
+
+    protected function registerMiddleware()
+    {
+        $this->aliasMiddleware('crud.binding', CrudrollerBindings::class);
+
+        $router = $this->app['router'];
+
+        if (($offset = array_search(SubstituteBindings::class, $router->middlewarePriority)) !== false) {
+            $router->middlewarePriority = array_merge(
+                array_slice($router->middlewarePriority, 0, $offset),
+                (array) CrudrollerBindings::class,
+                array_slice($router->middlewarePriority, $offset)
+            );
+        };
     }
 
     protected function bindClasses()
@@ -61,45 +106,17 @@ class CrudrollerServiceProvider extends ServiceProvider
     protected function registerFacades()
     {
         $facades = [
-            'Cruder' => \Shanginn\Crudroller\Facades\Cruder::class,
-            'Crudroller' => \Shanginn\Crudroller\Routing\Crudroller::class,
-            'CrudRequest' => \Shanginn\Crudroller\Http\Requests\CrudRequest::class
+            'Cruder' => CruderFacade::class,
+            'Crudroller' => config('crudroller.crud_controller_class'),
+            'CrudRequest' => CrudRequest::class
         ];
 
         AliasLoader::getInstance($facades)->register();
     }
 
-    protected function registerMiddleware()
+    protected function prependCrudrollerMiddleware(\Illuminate\Foundation\Http\Kernel $kernel)
     {
-        $this->aliasMiddleware('crud.binding', CrudrollerBindings::class);
-
-        $router = $this->app['router'];
-
-        if (($offset = array_search(SubstituteBindings::class, $router->middlewarePriority)) !== false) {
-            $router->middlewarePriority = array_merge(
-                array_slice($router->middlewarePriority, 0, $offset),
-                (array) CrudrollerBindings::class,
-                array_slice($router->middlewarePriority, $offset)
-            );
-        };
-    }
-
-    protected function registerClassAliases()
-    {
-        $aliases = [
-            'crud.resource' => [
-                \Dingo\Api\Routing\ResourceRegistrar::class,
-                \Illuminate\Routing\ResourceRegistrar::class
-            ],
-            'crud.binding' => CrudrollerBindings::class,
-            'crud.cruder' => Cruder::class,
-        ];
-
-        foreach ($aliases as $key => $aliases) {
-            foreach ((array) $aliases as $alias) {
-                $this->app->alias($key, $alias);
-            }
-        }
+        //kernel->prependMiddleware('crud.binding');
     }
 
     /**

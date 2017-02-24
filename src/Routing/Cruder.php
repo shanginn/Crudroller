@@ -6,6 +6,7 @@ use Intervention\Image\Exception\RuntimeException;
 
 class Cruder
 {
+
     protected $modelsNamespace = '\App';
     protected $requestsNamespace = '\App\Api\V1\Requests';
     protected $controllersNamespace = '\App\Api\V1\Controllers';
