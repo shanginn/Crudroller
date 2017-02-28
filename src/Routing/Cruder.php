@@ -33,10 +33,18 @@ class Cruder
      *
      * @return void
      */
-    public function endpoints($endpoints)
+    public function endpoints($endpoints, $options = [])
     {
         foreach ($endpoints as $endpoint) {
-            call_user_func_array([$this, 'endpoint'], (array) $endpoint);
+            if (!is_array($endpoint)) {
+                $endpoint = [$endpoint, $options];
+            } else {
+                $endpoint[1] = array_merge(($endpoint[1] ?? []), $options);
+            }
+
+            call_user_func_array([$this, 'endpoint'], array_merge(
+                (array) $endpoint
+            ));
         }
     }
 

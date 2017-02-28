@@ -79,13 +79,14 @@ class CrudrollerServiceProvider extends ServiceProvider
 
         $router = $this->app['router'];
 
-        if (($offset = array_search(SubstituteBindings::class, $router->middlewarePriority)) !== false) {
+        if (($offset = 1)){//array_search(SubstituteBindings::class, $router->middlewarePriority)) !== false) {
             $router->middlewarePriority = array_merge(
                 array_slice($router->middlewarePriority, 0, $offset),
                 (array) CrudrollerBindings::class,
                 array_slice($router->middlewarePriority, $offset)
             );
         };
+
     }
 
     protected function bindClasses()

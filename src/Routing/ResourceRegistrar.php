@@ -43,8 +43,12 @@ class ResourceRegistrar extends \Illuminate\Routing\ResourceRegistrar
     public function register($name, $controller, array $options = [])
     {
         if (!isset($options['middleware'])) {
-            $options['middleware'] = 'crud.binding';
+            $options['middleware'] = [];
+        } elseif (!is_array($options['middleware'])) {
+            $options['middleware'] = (array) $options['middleware'];
         }
+
+        $options['middleware'][] = 'crud.binding';
 
         parent::register($name, $controller, $options);
     }
