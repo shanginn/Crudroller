@@ -26,6 +26,11 @@ class Cruder
         $this->router = $router;
     }
 
+    public function setRouter($router)
+    {
+        $this->router = $router;
+    }
+
     /**
      * Register endpoints
      *
