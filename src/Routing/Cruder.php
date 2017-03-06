@@ -34,7 +34,8 @@ class Cruder
     /**
      * Register endpoints
      *
-     * @param array  $endpoints
+     * @param array $endpoints
+     * @param array $options
      *
      * @return void
      */

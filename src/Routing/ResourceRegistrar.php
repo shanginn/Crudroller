@@ -28,6 +28,7 @@ class ResourceRegistrar extends \Illuminate\Routing\ResourceRegistrar
     protected function getResourceMethods($defaults, $options)
     {
         $defaults = parent::getResourceMethods($defaults, $options);
+        //dd($defaults);
 
         return $defaults;
     }
