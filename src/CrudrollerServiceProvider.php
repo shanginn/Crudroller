@@ -3,6 +3,7 @@
 namespace Shanginn\Crudroller;
 
 use Illuminate\Support\ServiceProvider;
+use Psy\Exception\RuntimeException;
 use Shanginn\Crudroller\Facades\Cruder as CruderFacade;
 use Shanginn\Crudroller\Routing\Cruder;
 use Shanginn\Crudroller\Routing\Middleware\CrudrollerBindings;
@@ -11,6 +12,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Foundation\AliasLoader;
 use Shanginn\Crudroller\Http\Requests\CrudRequest;
+use Shanginn\Crudroller\Controllers\Crudroller;
 
 class CrudrollerServiceProvider extends ServiceProvider
 {
@@ -106,9 +108,15 @@ class CrudrollerServiceProvider extends ServiceProvider
 
     protected function registerFacades()
     {
+        $crudController = config('crudroller.crud_controller_class');
+
+        if (! (in_array(Crudroller::class, class_implements($crudController)))) {
+            throw new RuntimeException($crudController . ' must implement ' . Crudroller::class . ' interface');
+        }
+
         $facades = [
             'Cruder' => CruderFacade::class,
-            'Crudroller' => config('crudroller.crud_controller_class'),
+            'Crudroller' => $crudController,
             'CrudRequest' => CrudRequest::class
         ];
 

@@ -5,9 +5,8 @@ namespace Shanginn\Crudroller\Controllers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 
-abstract class Crudroller extends Controller
+interface Crudroller
 {
     /**
      * Display a listing of the resource.
@@ -16,7 +15,7 @@ abstract class Crudroller extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    abstract public function index(Model $model, Request $request);
+    public function index(Model $model, Request $request);
 
     /**
      * Store a newly created resource in storage.
@@ -25,7 +24,7 @@ abstract class Crudroller extends Controller
      * @param \Illuminate\Database\Eloquent\Model $model
      * @return \Illuminate\Http\Response
      */
-    abstract public function store(FormRequest $request, Model $model);
+    public function store(FormRequest $request, Model $model);
 
     /**
      * Display the specified resource.
@@ -33,7 +32,7 @@ abstract class Crudroller extends Controller
      * @param  Model  $item
      * @return \Illuminate\Http\Response
      */
-    abstract public function show(Model $item);
+    public function show(Model $item);
 
     /**
      * Update the specified resource in storage.
@@ -42,7 +41,7 @@ abstract class Crudroller extends Controller
      * @param  Model  $item
      * @return \Illuminate\Http\Response
      */
-    abstract public function update(FormRequest $request, Model $item);
+    public function update(FormRequest $request, Model $item);
 
     /**
      * Remove the specified resource from storage.
@@ -50,5 +49,5 @@ abstract class Crudroller extends Controller
      * @param  Model  $item
      * @return \Illuminate\Http\Response
      */
-    abstract public function destroy(Model $item);
+    public function destroy(Model $item);
 }
