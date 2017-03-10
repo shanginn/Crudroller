@@ -83,6 +83,7 @@ class Cruder
 
         $options['crud']['Controller'] = $options['crud']['Controller'] ?? $this->getControllerClass($basename);
 
+        //dump($name, $options);
         $this->router->resource($name, $controller, $options);
     }
 
