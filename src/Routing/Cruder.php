@@ -98,7 +98,6 @@ class Cruder
         $modelClass = $this->modelsNamespace . '\\'. $basename;
 
         if(!class_exists($modelClass)) {
-            //TODO: check this and exit properly
             return false;
             throw new RuntimeException('Model ' . $modelClass . ' doesn\'t exits');
         }

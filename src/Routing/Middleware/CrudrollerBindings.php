@@ -49,7 +49,10 @@ class CrudrollerBindings
         $route = $request->route();
 
         if (isset($route->action['crud'])) {
-            list($modelClass, $itemParam, $requestsClasses, $controllerClass) = $route->action['crud'];
+            list($modelClass, $itemParam,
+                 $requestsClasses, $controllerClass
+            ) = $route->action['crud'];
+
             list($class, $method) = Str::parseCallback($route->action['uses']);
 
             // If we have concrete controller for this endpoint
