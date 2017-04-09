@@ -31,7 +31,8 @@ class CrudrollerServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/config/crudroller.php', 'crudroller'
+            __DIR__ . '/config/crudroller.php',
+            'crudroller'
         );
 
         $this->registerClassAliases();
