@@ -15,7 +15,7 @@ interface Crudroller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Model $model, Request $request);
+    public function index(Model $model);//, Request $request);
 
     /**
      * Store a newly created resource in storage.
@@ -29,10 +29,11 @@ interface Crudroller
     /**
      * Display the specified resource.
      *
-     * @param  Model  $item
+     * @param  Model $item
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Model $item);
+    public function show(Model $item);//, Request $request);
 
     /**
      * Update the specified resource in storage.
@@ -46,8 +47,9 @@ interface Crudroller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Model  $item
+     * @param  Model $item
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Model $item);
+    public function destroy(Model $item);//, Request $request);
 }
