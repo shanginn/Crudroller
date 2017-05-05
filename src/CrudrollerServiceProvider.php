@@ -2,6 +2,7 @@
 
 namespace Shanginn\Crudroller;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\ServiceProvider;
 use Psy\Exception\RuntimeException;
 use Shanginn\Crudroller\Facades\Cruder as CruderFacade;
@@ -12,7 +13,7 @@ use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Foundation\AliasLoader;
 use Shanginn\Crudroller\Http\Requests\CrudRequest;
-use Shanginn\Crudroller\Controllers\Crudroller;
+use Shanginn\Crudroller\Interfaces\Crudroller;
 
 class CrudrollerServiceProvider extends ServiceProvider
 {
@@ -111,14 +112,20 @@ class CrudrollerServiceProvider extends ServiceProvider
     {
         $crudController = config('crudroller.crud_controller_class');
 
-        if (! (in_array(Crudroller::class, class_implements($crudController)))) {
+        if (!in_array(Crudroller::class, class_implements($crudController))) {
             throw new RuntimeException($crudController . ' must implement ' . Crudroller::class . ' interface');
+        }
+
+        $crudRequestClass = config('crudroller.crud_request_class');
+
+        if ($crudRequestClass && !is_subclass_of($crudRequestClass, FormRequest::class)) {
+            throw new RuntimeException($crudRequestClass . ' must be instance of ' . FormRequest::class);
         }
 
         $facades = [
             'Cruder' => CruderFacade::class,
             'Crudroller' => $crudController,
-            'CrudRequest' => CrudRequest::class
+            'CrudRequest' => $crudRequestClass ?? CrudRequest::class
         ];
 
         AliasLoader::getInstance($facades)->register();

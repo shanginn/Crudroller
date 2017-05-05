@@ -97,7 +97,7 @@ class Cruder
     {
         $modelClass = $this->modelsNamespace . '\\'. $basename;
 
-        if(!class_exists($modelClass)) {
+        if (!class_exists($modelClass)) {
             return false;
             throw new RuntimeException('Model ' . $modelClass . ' doesn\'t exits');
         }
@@ -111,10 +111,16 @@ class Cruder
 
         $requests = array_filter(array_reduce($this->methods, function ($result, $method) use ($requestBasename) {
             $requestClass = $requestBasename . ucfirst($method) . 'Request';
+            $fallbackClass = $this->requestsNamespace . '\\Crud' . ucfirst($method) . 'Request';
 
-            $result[$method] = $result[$method] ?? class_exists($requestClass) ? $requestClass : null;
+            $result[$method] = $result[$method] ??
+                class_exists($requestClass) ? $requestClass :
+                    (class_exists($fallbackClass) ? $fallbackClass : null);
+
             return $result;
-        }, $requestsFromOptions), function($e) {return !is_null($e);});
+        }, $requestsFromOptions), function ($e) {
+            return !is_null($e);
+        });
 
         $requestClass = $requestBasename . 'Request';
         $requests['default'] = class_exists($requestClass) ? $requestClass : 'CrudRequest';

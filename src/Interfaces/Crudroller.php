@@ -1,10 +1,9 @@
 <?php
 
-namespace Shanginn\Crudroller\Controllers;
+namespace Shanginn\Crudroller\Interfaces;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
 interface Crudroller
 {
@@ -12,10 +11,9 @@ interface Crudroller
      * Display a listing of the resource.
      *
      * @param \Illuminate\Database\Eloquent\Model $model
-     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Model $model);//, Request $request);
+    public function index(Model $model);
 
     /**
      * Store a newly created resource in storage.
@@ -30,10 +28,9 @@ interface Crudroller
      * Display the specified resource.
      *
      * @param  Model $item
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function show(Model $item);//, Request $request);
+    public function show(Model $item);
 
     /**
      * Update the specified resource in storage.
@@ -48,8 +45,8 @@ interface Crudroller
      * Remove the specified resource from storage.
      *
      * @param  Model $item
-     * @param Request $request
+     * @param  FormRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Model $item);//, Request $request);
+    public function destroy(Model $item, FormRequest $request);
 }
