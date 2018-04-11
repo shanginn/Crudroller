@@ -8,8 +8,8 @@ class Cruder
 {
 
     protected $modelsNamespace = '\App';
-    protected $requestsNamespace = '\App\Api\V1\Requests';
-    protected $controllersNamespace = '\App\Api\V1\Controllers';
+    protected $requestsNamespace = '\App\Requests';
+    protected $controllersNamespace = '\App\Controllers';
 
     //TODO: get methods from resource registrar
     protected $methods = ['store', 'show', 'update', 'destroy'];
@@ -63,14 +63,14 @@ class Cruder
      *
      * @return void
      */
-    public function endpoint($name, $controller = 'Crudroller', array $options = [])
+    public function endpoint($name, $controller = '\Crudroller', array $options = [])
     {
         $basename = ucfirst(str_singular($name));
 
         // We can call this method with 2 or 3 arguments
         if (is_array($controller)) {
             $options = $controller;
-            $controller = 'Crudroller';
+            $controller = '\Crudroller';
         }
 
         if (!isset($options['crud']) || !is_array($options['crud'])) {
@@ -83,14 +83,13 @@ class Cruder
 
         $options['crud']['Controller'] = $options['crud']['Controller'] ?? $this->getControllerClass($basename);
 
-        //dump($name, $options);
         $this->router->resource($name, $controller, $options);
     }
 
     protected function getControllerClass($basename)
     {
         $controllerClass = $this->controllersNamespace . '\\' . $basename . 'Controller';
-        return class_exists($controllerClass) ? $controllerClass : 'Crudroller';
+        return class_exists($controllerClass) ? $controllerClass : '\Crudroller';
     }
 
     protected function getModelClass($basename)

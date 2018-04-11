@@ -49,14 +49,17 @@ class CrudrollerBindings
         $route = $request->route();
 
         if (isset($route->action['crud'])) {
-            list($modelClass, $itemParam,
-                 $requestsClasses, $controllerClass
-            ) = $route->action['crud'];
+            [
+                $modelClass,
+                $itemParam,
+                $requestsClasses,
+                $controllerClass
+            ] = $route->action['crud'];
 
-            list($class, $method) = Str::parseCallback($route->action['uses']);
+            [$class, $method] = Str::parseCallback($route->action['uses']);
 
             // If we have concrete controller for this endpoint
-            if ($controllerClass !== 'Crudroller') {
+            if ($controllerClass !== '\Crudroller') {
                 // If endpoint method exists in the concrete controller
                 // let the controller handle everything else
                 if (method_exists($controllerClass, $method)) {
@@ -86,9 +89,11 @@ class CrudrollerBindings
         if ($param = $route->parameter($itemParam)) {
             $model = $this->app->make($modelClass);
 
-            $route->setParameter('item',
+            $route->setParameter(
+                'item',
                 $model->where(
-                    $model->getRouteKeyName(), $param
+                    $model->getRouteKeyName(),
+                    $param
                 )->firstOrFail()
             );
 

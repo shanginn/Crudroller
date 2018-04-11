@@ -63,7 +63,7 @@ class CrudrollerServiceProvider extends ServiceProvider
     {
         $classAliases = [
             'crud.resource' => [
-                \Dingo\Api\Routing\ResourceRegistrar::class,
+                \App\Routing\ResourceRegistrar::class,
                 \Illuminate\Routing\ResourceRegistrar::class
             ],
             'crud.binding' => CrudrollerBindings::class,
@@ -133,7 +133,7 @@ class CrudrollerServiceProvider extends ServiceProvider
 
     protected function prependCrudrollerMiddleware(\Illuminate\Foundation\Http\Kernel $kernel)
     {
-        //kernel->prependMiddleware('crud.binding');
+        $kernel->prependMiddleware('crud.binding');
     }
 
     /**
@@ -148,7 +148,7 @@ class CrudrollerServiceProvider extends ServiceProvider
      */
     protected function aliasMiddleware($name, $class)
     {
-        /** @var \Dingo\Api\Routing\Router|\Illuminate\Routing\Router $router */
+        /** @var \App\Routing\Router|\Illuminate\Routing\Router $router */
         $router = $this->app['router'];
 
         if (method_exists($router, 'aliasMiddleware')) {
