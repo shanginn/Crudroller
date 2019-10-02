@@ -1,6 +1,8 @@
 <?php
 
 namespace Shanginn\Crudroller\Routing;
+
+use Illuminate\Support\Str;
 use \Illuminate\Routing\Router;
 use Intervention\Image\Exception\RuntimeException;
 
@@ -65,7 +67,7 @@ class Cruder
      */
     public function endpoint($name, $controller = '\Crudroller', array $options = [])
     {
-        $basename = ucfirst(str_singular($name));
+        $basename = ucfirst(Str::singular($name));
 
         // We can call this method with 2 or 3 arguments
         if (is_array($controller)) {
